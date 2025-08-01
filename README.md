@@ -37,20 +37,6 @@ python inject_vulnerability.py --batch -i contracts/ -o vulnerable/ -v timestamp
 # With trained model
 python inject_vulnerability.py -i contract.sol -o output.sol -v unchecked_call -m cabis_project/models/cabis_best.pt
 
-
-📁 Project Structure
-cabis_project/
-├── data/
-│   ├── solidifi/         # Raw SolidiFI dataset
-│   ├── processed/        # Preprocessed data
-│   └── augmented/        # Augmented training data
-├── models/               # Saved model checkpoints
-├── results/              # Evaluation results
-├── logs/                 # Training logs
-├── configs/              # Configuration files
-└── detection_tools/      # Security analysis tools
-
-
 🔧 Key Components
 Core Modules
 
