@@ -1,0 +1,42 @@
+model:
+  hidden_dim: 64  # Reduced for faster training
+  num_heads: 2
+  num_layers: 2
+  vocab_size: 10000
+  max_seq_length: 128
+  memory_size: 100
+  
+training:
+  batch_size: 1
+  learning_rate: 0.001
+  epochs: 3  # Just 3 epochs for testing
+  warmup_steps: 10
+  gradient_clip: 1.0
+  gradient_accumulation_steps: 1
+  num_workers: 0
+  pin_memory: false
+  
+vulnerability_types:
+  - reentrancy
+  - timestamp_dependence
+  - integer_overflow
+  - unchecked_call
+  - delegatecall
+  - tx_origin
+  - uninitialized_storage
+  - arbitrary_send
+  - self_destruct
+  - locked_ether
+  
+evaluation:
+  num_samples: 10
+  batch_size: 1
+  detection_tools: []  # No external tools for quick test
+  
+paths:
+  data_dir: ./cabis_project/data
+  model_dir: ./cabis_project/models
+  results_dir: ./cabis_project/results
+  log_dir: ./cabis_project/logs
+  
+use_wandb: false

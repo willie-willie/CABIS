@@ -1,0 +1,39 @@
+model:
+  hidden_dim: 128
+  num_heads: 2
+  num_layers: 2
+  vocab_size: 30000
+  max_seq_length: 256
+  memory_size: 500
+training:
+  batch_size: 4
+  learning_rate: 0.0001
+  epochs: 5
+  warmup_steps: 100
+  gradient_clip: 1.0
+  gradient_accumulation_steps: 4
+  num_workers: 2
+  pin_memory: false
+vulnerability_types:
+- reentrancy
+- timestamp_dependence
+- integer_overflow
+- unchecked_call
+- delegatecall
+- tx_origin
+- uninitialized_storage
+- arbitrary_send
+- self_destruct
+- locked_ether
+evaluation:
+  num_samples: 100
+  batch_size: 1
+  detection_tools:
+  - mythril
+  - slither
+paths:
+  data_dir: ./cabis_project/data
+  model_dir: ./cabis_project/models
+  results_dir: ./cabis_project/results
+  log_dir: ./cabis_project/logs
+use_wandb: false

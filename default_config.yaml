@@ -1,0 +1,108 @@
+model:
+  hidden_dim: 256
+  num_heads: 4
+  num_layers: 3
+  vocab_size: 30000
+  max_seq_length: 512
+  memory_size: 1000
+  dropout: 0.1
+  
+training:
+  batch_size: 4
+  learning_rate: 0.0001
+  epochs: 150
+  warmup_steps: 1000
+  gradient_clip: 1.0
+  gradient_accumulation_steps: 4
+  num_workers: 4
+  pin_memory: true
+  save_every: 5
+  validate_every: 2
+  
+# All 7 vulnerability types from SolidiFI dataset
+vulnerability_types:
+  - reentrancy
+  - integer_overflow
+  - timestamp_dependence
+  - unchecked_call
+  - tx_origin
+  - transaction_order_dependence
+  - unhandled_exceptions
+
+# Updated folder mapping
+solidifi_folders:
+  'Re-entrancy': 'reentrancy'
+  'Overflow-Underflow': 'integer_overflow'
+  'Timestamp-Dependency': 'timestamp_dependence'
+  'Unchecked-Send': 'unchecked_call'
+  'tx.origin': 'tx_origin'
+  'TOD': 'transaction_order_dependence'
+  'Unhandled-Exceptions': 'unhandled_exceptions'
+  
+evaluation:
+  num_samples: 500
+  batch_size: 4
+  detection_tools:
+    - mythril
+    - slither
+    - oyente
+    - securify
+  metrics:
+    - diversity
+    - realism
+    - preservation
+    - exploitability
+    - compilation
+    - detection_bypass
+  
+paths:
+  data_dir: ./cabis_project/data/solidifi
+  model_dir: ./cabis_project/models
+  results_dir: ./cabis_project/results
+  log_dir: ./cabis_project/logs
+  checkpoint_dir: ./cabis_project/checkpoints
+  
+dataset:
+  expected_folders: 7
+  files_per_folder: 50
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  
+augmentation:
+  enable: true
+  techniques:
+    - variable_renaming
+    - comment_injection
+    - whitespace_modification
+    - function_reordering
+  probability: 0.3
+  
+# UPDATED loss weights for better diversity
+loss_weights:
+  adversarial: 0.8    # Reduced from 1.0
+  reconstruction: 0.4  # Reduced from 0.5
+  classification: 0.3  # Same
+  diversity: 0.5      # Increased from 0.2
+  
+optimizer:
+  name: AdamW
+  betas: [0.9, 0.999]
+  weight_decay: 0.01
+  
+scheduler:
+  name: CosineAnnealingLR
+  T_max: 50
+  eta_min: 0.00001
+  
+logging:
+  use_wandb: true
+  use_tensorboard: true
+  log_every_n_steps: 100
+  save_model_every_n_epochs: 100
+  
+experiment:
+  name: cabis_full_solidifi_v2
+  seed: 42
+  deterministic: true
+  mixed_precision: true
